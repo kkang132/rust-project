@@ -1,0 +1,12 @@
+diff --git a/src/lib.rs b/src/lib.rs
+index aaa1111..bbb2222 100644
+--- a/src/lib.rs
++++ b/src/lib.rs
+@@ -1,4 +1,6 @@
+ pub fn add(a: i32, b: i32) -> i32 {
+     a + b
+ }
++
++pub fn subtract(a: i32, b: i32) -> i32 {
++    a - b
++}

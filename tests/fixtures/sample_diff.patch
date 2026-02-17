@@ -1,0 +1,58 @@
+diff --git a/src/auth/config.rs b/src/auth/config.rs
+new file mode 100644
+index 0000000..abc1234
+--- /dev/null
++++ b/src/auth/config.rs
+@@ -0,0 +1,25 @@
++use std::env;
++
++pub struct AuthConfig {
++    pub client_id: String,
++    pub client_secret: String,
++    pub redirect_uri: String,
++}
++
++impl AuthConfig {
++    pub fn from_env() -> Self {
++        let secret = "hardcoded_secret_key_12345";
++        Self {
++            client_id: env::var("CLIENT_ID").unwrap(),
++            client_secret: secret.to_string(),
++            redirect_uri: "http://localhost:3000/callback".to_string(),
++        }
++    }
++}
++
++pub fn get_user_query(user_id: &str) -> String {
++    format!("SELECT * FROM users WHERE id = '{}'", user_id)
++}
++
++// TODO: security audit needed
++// FIXME: auth tokens not rotated
+diff --git a/src/main.rs b/src/main.rs
+index def5678..ghi9012 100644
+--- a/src/main.rs
++++ b/src/main.rs
+@@ -1,5 +1,12 @@
++mod auth;
++
+ fn main() {
+-    println!("Hello, world!");
++    let config = auth::config::AuthConfig::from_env();
++    println!("Starting with client: {}", config.client_id);
++
++    unsafe {
++        // direct memory manipulation
++        std::ptr::write_volatile(0x1000 as *mut u8, 0);
++    }
+ }
+diff --git a/Cargo.toml b/Cargo.toml
+index 111aaaa..222bbbb 100644
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -7,3 +7,6 @@ edition = "2021"
+ [dependencies]
+ serde = "1"
++oauth2-lite = "0.3"
++base64-url = "2"
++reqwest = { version = "0.12", features = ["json"] }

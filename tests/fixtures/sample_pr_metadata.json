@@ -1,0 +1,15 @@
+{
+  "number": 42,
+  "title": "Add OAuth2 login flow",
+  "user": {
+    "login": "alice"
+  },
+  "changed_files": 7,
+  "additions": 320,
+  "deletions": 45,
+  "base": {
+    "repo": {
+      "full_name": "org/repo"
+    }
+  }
+}
