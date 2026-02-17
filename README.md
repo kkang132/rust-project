@@ -61,7 +61,7 @@ cargo install --path .
 ### Build manually
 
 ```bash
-git clone <repo-url>
+git clone github.com/kkang132/rust-project
 cd pr-analyzer
 cargo build --release
 # Binary is at ./target/release/pr-analyzer
@@ -119,7 +119,7 @@ src/
 
 ## Development Environment
 
-This project is developed in [JetBrains Air](https://www.jetbrains.com/air/) using isolated git worktrees. Each agent operates in its own worktree, so Claude and Codex can edit files concurrently without producing merge conflicts or stepping on each other's in-progress changes. Air orchestrates the sessions; the worktrees provide the isolation.
+This project is developed in [JetBrains Air](https://air.dev/) using isolated git worktrees. Each agent operates in its own worktree, so Claude and Codex can edit files concurrently without producing merge conflicts or stepping on each other's in-progress changes. Air orchestrates the sessions; the worktrees provide the isolation.
 
 ### How the Rust Toolchain Boundaries Agent Edits
 
