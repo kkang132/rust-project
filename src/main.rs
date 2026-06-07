@@ -37,9 +37,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let cli = Cli::parse();
 
-    let pull_request = if cli.r#mock {
+    let (pull_request, config) = if cli.r#mock {
         info!("using mock PR data for demo");
-        build_mock_pr()?
+        (build_mock_pr()?, config::Config::default())
     } else {
         let pr_url = cli.pr_url.as_deref().ok_or(
             "PR URL is required unless --mock is used. Usage: pr-analyzer <URL> or pr-analyzer --mock",
@@ -57,11 +57,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         info!("fetching pull request from GitHub");
         let fetched = pr::fetch_pull_request(&parsed_url, &config).await?;
         info!(files = fetched.files_changed, additions = fetched.additions, deletions = fetched.deletions, "fetched PR metadata");
-        fetched
+        (fetched, config)
     };
 
     info!("running analysis");
-    let results = analysis::run_all(&pull_request).await?;
+    let results = analysis::run_all(&pull_request, &config).await?;
     info!(analyzers = results.len(), "analysis complete");
 
     info!("generating report");

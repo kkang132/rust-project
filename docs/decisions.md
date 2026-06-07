@@ -159,6 +159,24 @@ Tracing output goes to stderr so it never contaminates the report on stdout.
 
 ---
 
+## ADR-009: Treat Agentic Guardrails As Architecture
+
+**Date:** 2026-06-07
+**Status:** Active
+
+**Context:** This repository is meant to show more than agent output. An evaluator may see generated code and stop there. That reading misses the main design claim. In agentic engineering, the hard problem is not producing code. The hard problem is preserving intent after context loss.
+
+**Decision:** Treat the coordination artifacts as part of the architecture. `AGENTS.md`, `skills.md`, handoff files, ADRs, fixtures, tests, and cargo gates define the operating envelope for agents. They are not secondary documentation.
+
+**Rationale:** Agents can produce plausible Rust. They may still simplify the wrong thing, cross module boundaries, erase rationale, or change contracts that another agent depends on. The human contribution is the prior choice of constraints. Rust extends that constraint system. Ownership, borrowing, typed errors, and `Send + Sync` move memory and concurrency questions into compiler checked form. This does not assume that the agent understands allocation. It assumes that the toolchain must catch what the agent cannot be trusted to reason about.
+
+**Alternatives considered:**
+- *Evaluate only the final code:* This hides the design work that made agent execution viable.
+- *Rely on prompt instructions alone:* Prompts decay with context. Files, tests, and compiler gates persist.
+- *Use a less strict language for speed:* This would leave more correctness burden in agent judgement. Rust makes more of that burden mechanical.
+
+---
+
 *To add a new entry: copy the template below, fill it in, and append it above this line.*
 
 ```markdown

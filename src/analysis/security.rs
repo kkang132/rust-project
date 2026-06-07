@@ -1,6 +1,7 @@
 use async_trait::async_trait;
 
 use super::{Analyzer, AnalysisError};
+use crate::config::SecurityConfig;
 use crate::pr::PullRequest;
 use crate::report::types::{AnalysisResult, Finding, RiskLevel};
 
@@ -13,12 +14,20 @@ use crate::report::types::{AnalysisResult, Finding, RiskLevel};
 /// - Unsafe code blocks introduced
 /// - Permission/scope changes in config files
 pub struct SecurityAnalyzer {
-    // TODO (third-party agent): Add configurable patterns from Config.security.patterns
+    custom_patterns: Vec<String>,
 }
 
 impl SecurityAnalyzer {
     pub fn new() -> Self {
-        Self {}
+        Self {
+            custom_patterns: Vec::new(),
+        }
+    }
+
+    pub fn with_config(config: &SecurityConfig) -> Self {
+        Self {
+            custom_patterns: config.patterns.clone(),
+        }
     }
 
     /// Scan diff lines for patterns indicating SQL injection risk.
@@ -241,6 +250,43 @@ impl SecurityAnalyzer {
         }
         findings
     }
+
+    /// Check for custom regex patterns from configuration.
+    fn check_custom_patterns(&self, pr: &PullRequest) -> Vec<Finding> {
+        let mut findings = Vec::new();
+        if self.custom_patterns.is_empty() {
+            return findings;
+        }
+
+        let mut regexes = Vec::new();
+        for pattern in &self.custom_patterns {
+            if let Ok(re) = regex::Regex::new(pattern) {
+                regexes.push((re, pattern));
+            }
+        }
+
+        for file in &pr.files {
+            for hunk in &file.hunks {
+                for (i, line) in hunk.lines.iter().enumerate() {
+                    if !line.starts_with('+') {
+                        continue;
+                    }
+                    let content = &line[1..];
+                    for (re, pattern) in &regexes {
+                        if re.is_match(content) {
+                            findings.push(Finding {
+                                message: format!("Custom security pattern match: {}", pattern),
+                                file: Some(file.path.clone()),
+                                line: Some(hunk.new_start + i),
+                                severity: RiskLevel::Medium,
+                            });
+                        }
+                    }
+                }
+            }
+        }
+        findings
+    }
 }
 
 #[async_trait]
@@ -256,6 +302,7 @@ impl Analyzer for SecurityAnalyzer {
         findings.extend(self.check_unsafe_code(pr));
         findings.extend(self.check_new_dependencies(pr));
         findings.extend(self.check_command_injection(pr));
+        findings.extend(self.check_custom_patterns(pr));
 
         let risk_level = determine_risk_level(&findings);
 
@@ -407,6 +454,25 @@ mod tests {
         let result = analyzer.analyze(&pr).await.unwrap();
         assert!(result.findings.is_empty());
         assert_eq!(result.risk_level, RiskLevel::Low);
+    }
+
+    #[tokio::test]
+    async fn test_detects_custom_patterns() {
+        let mut pr = test_pull_request();
+        pr.files = vec![test_diff_file(
+            "src/main.rs",
+            vec!["+    println!(\"DEBUG: session_id = {}\", id);".to_string()],
+        )];
+        
+        let config = SecurityConfig {
+            patterns: vec!["DEBUG:.*session_id".to_string()],
+        };
+        let analyzer = SecurityAnalyzer::with_config(&config);
+        let result = analyzer.analyze(&pr).await.unwrap();
+        
+        assert!(!result.findings.is_empty());
+        assert!(result.findings.iter().any(|f| f.message.contains("Custom security pattern match")));
+        assert_eq!(result.risk_level, RiskLevel::Medium);
     }
 
     #[test]

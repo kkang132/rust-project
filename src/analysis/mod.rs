@@ -6,13 +6,13 @@ use async_trait::async_trait;
 use thiserror::Error;
 use tracing::{debug, info_span, Instrument};
 
+use crate::config::Config;
 use crate::pr::PullRequest;
 use crate::report::types::AnalysisResult;
 
 #[derive(Debug, Error)]
 pub enum AnalysisError {
     #[error("Analysis failed for {analyzer}: {reason}")]
-    #[allow(dead_code)] // Used by future analyzer implementations
     Failed {
         analyzer: String,
         reason: String,
@@ -38,8 +38,8 @@ pub trait Analyzer: Send + Sync {
 ///
 /// Returns a Vec<AnalysisResult> with one entry per analyzer,
 /// or propagates the first error encountered.
-pub async fn run_all(pr: &PullRequest) -> Result<Vec<AnalysisResult>, AnalysisError> {
-    let security = security::SecurityAnalyzer::new();
+pub async fn run_all(pr: &PullRequest, config: &Config) -> Result<Vec<AnalysisResult>, AnalysisError> {
+    let security = security::SecurityAnalyzer::with_config(&config.security);
     let complexity = complexity::ComplexityAnalyzer::new();
     let style = style::StyleAnalyzer::new();
 
@@ -96,14 +96,16 @@ mod tests {
     #[tokio::test]
     async fn test_run_all_returns_three_results() {
         let pr = test_pull_request();
-        let results = run_all(&pr).await.unwrap();
+        let config = Config::default();
+        let results = run_all(&pr, &config).await.unwrap();
         assert_eq!(results.len(), 3);
     }
 
     #[tokio::test]
     async fn test_run_all_analyzer_names() {
         let pr = test_pull_request();
-        let results = run_all(&pr).await.unwrap();
+        let config = Config::default();
+        let results = run_all(&pr, &config).await.unwrap();
         let names: Vec<&str> = results.iter().map(|r| r.analyzer_name.as_str()).collect();
         assert!(names.contains(&"Security Risk Assessment"));
         assert!(names.contains(&"Complexity Assessment"));
@@ -113,6 +115,7 @@ mod tests {
     #[tokio::test]
     async fn test_run_all_with_dirty_pr() {
         let mut pr = test_pull_request();
+        let config = Config::default();
         pr.additions = 600;
         pr.files = vec![test_diff_file(
             "src/main.rs",
@@ -122,7 +125,7 @@ mod tests {
                 "+        todo!(\"fix this\")".to_string(),
             ],
         )];
-        let results = run_all(&pr).await.unwrap();
+        let results = run_all(&pr, &config).await.unwrap();
         assert_eq!(results.len(), 3);
         // At least one analyzer should flag something
         assert!(results.iter().any(|r| !r.findings.is_empty()));

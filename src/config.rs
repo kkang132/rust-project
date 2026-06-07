@@ -24,12 +24,10 @@ pub struct Config {
 
     /// Security analyzer settings (read from TOML config, consumed by future configurable patterns)
     #[serde(default)]
-    #[allow(dead_code)]
     pub security: SecurityConfig,
 
     /// Style analyzer settings (read from TOML config, consumed by future configurable layers)
     #[serde(default)]
-    #[allow(dead_code)]
     pub style: StyleConfig,
 }
 
@@ -43,7 +41,6 @@ pub struct GitHubConfig {
 pub struct SecurityConfig {
     /// Additional regex patterns to flag as security risks
     #[serde(default)]
-    #[allow(dead_code)]
     pub patterns: Vec<String>,
 }
 
@@ -51,7 +48,6 @@ pub struct SecurityConfig {
 pub struct StyleConfig {
     /// Directories that define architectural layers (e.g., ["api", "domain", "infra"])
     #[serde(default)]
-    #[allow(dead_code)]
     pub layers: Vec<String>,
 }
 

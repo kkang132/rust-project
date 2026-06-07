@@ -8,6 +8,14 @@
 
 A CLI tool that takes a GitHub Pull Request URL and returns a structured risk assessment across three dimensions: **security**, **complexity**, and **style/architecture conformance**. The primary aim here is to show the art of possible with SOTA LLMs and human steering in 1Q26. This is called, by some, 'agentic engineering'. 
 
+## What This Project Demonstrates
+
+This repository is an agentic engineering case study. The visible product is a Rust CLI. The deeper object is the control system around it: ownership boundaries, handoff files, ADRs, fixture tests, lint gates, and written conventions.
+
+The project should not be read as "AI generated code." It should be read as a human principal setting the workflow, constraints, and review surfaces. Agents execute inside those boundaries.
+
+Rust is central to the demonstration. A common objection is that LLMs do not understand memory allocation, aliasing, or lifetime pressure. This project accepts that objection. It answers by moving those concerns into the toolchain. Ownership, borrowing, typed errors, and `Send + Sync` constraints become mechanical checks. The human judgement lies in choosing a language and workflow where agent output is bounded before it is trusted.
+
 ```
 $ pr-analyzer https://github.com/org/repo/pull/42
 
