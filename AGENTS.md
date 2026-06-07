@@ -19,13 +19,13 @@ Rust is part of that envelope. Agents may not reason reliably about allocation, 
 
 ## Purpose
 
-Playbook for AI agents collaborating in this repo. Defines the branching, commit, review, and merge workflow that simulates a human team using PRs and code review — but with Claude as both author and reviewer.
+Playbook for the AI agents working in this repo. It defines the branching, commit, review, and merge workflow, a simulation of a human team using pull requests and code review, with Claude as both author and reviewer.
 
 ## Principles
 
 1. **Main is sacred.** Nothing lands on `main` without passing review.
 2. **Claude reviews Claude.** The reviewer role enforces intent and architecture, not just syntax.
-3. **Small, reviewable units.** One logical change per branch. A fix, a feature, a refactor — never a mix.
+3. **Small, reviewable units.** One logical change per branch: a fix, a feature, or a refactor, never a mix.
 4. **Full history.** Every decision, review, and merge is recorded in git and in ADRs.
 
 ---
@@ -66,7 +66,7 @@ git worktree add ../rust-project-<agent>-<task> -b <agent>/<type>/<name> main
 git worktree remove ../rust-project-<agent>-<task>
 ```
 
-If worktrees are unavailable or impractical, a regular branch is acceptable — but the agent must not have uncommitted changes on another branch while switching.
+If worktrees are unavailable or impractical, a regular branch is acceptable. The agent must not carry uncommitted changes on another branch while switching.
 
 ### Commit Message Format
 
@@ -138,14 +138,14 @@ When the author considers a branch ready, it produces a **review request** as a 
 
 The reviewer evaluates against this checklist:
 
-1. **Intent alignment** — Does the code do what the commit message and review request claim?
-2. **Architecture conformance** — Does it follow patterns established in the codebase and documented in ADRs?
-3. **Scope discipline** — Is the change focused? No unrelated modifications, no premature abstractions?
-4. **Correctness** — Are there logic errors, off-by-one bugs, missing edge cases at system boundaries?
-5. **Security** — No injection vectors, no hardcoded secrets, no unsafe code without justification?
-6. **Contract preservation** — Do shared types and interfaces remain compatible with other agents' modules?
-7. **Test coverage** — Are new behaviors tested? Do existing tests still pass?
-8. **Commit message accuracy** — Does the WHY/HOW/SCOPE match the actual diff?
+1. **Intent alignment.** Does the code do what the commit message and review request claim?
+2. **Architecture conformance.** Does it follow patterns established in the codebase and documented in ADRs?
+3. **Scope discipline.** Is the change focused? No unrelated modifications, no premature abstractions?
+4. **Correctness.** Are there logic errors, off-by-one bugs, missing edge cases at system boundaries?
+5. **Security.** No injection vectors, no hardcoded secrets, no unsafe code without justification?
+6. **Contract preservation.** Do shared types and interfaces remain compatible with other agents' modules?
+7. **Test coverage.** Are new behaviours tested? Do existing tests still pass?
+8. **Commit message accuracy.** Does the WHY/HOW/SCOPE match the actual diff?
 
 ### Review Outcomes
 
@@ -212,7 +212,7 @@ Accepted | Superseded by ADR-XXX | Deprecated
 <What we decided and why>
 
 ## Consequences
-<What follows from this decision — trade-offs, constraints, future implications>
+<What follows from this decision: trade-offs, constraints, future implications>
 ```
 
 ### When to Write an ADR

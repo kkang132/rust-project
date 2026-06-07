@@ -1,4 +1,4 @@
-# Claude Agent Instructions — pr-analyzer
+# Claude Agent Instructions
 
 ## Your Role
 
@@ -6,15 +6,15 @@ You own the **analysis engine** and **report formatting** modules. You also hand
 
 ## Assigned Modules
 
-- `src/analysis/` — `mod.rs`, `security.rs`, `complexity.rs`, `style.rs`
-- `src/report/` — `mod.rs`, `types.rs`
+- `src/analysis/`: `mod.rs`, `security.rs`, `complexity.rs`, `style.rs`
+- `src/report/`: `mod.rs`, `types.rs`
 - Integration work in `src/main.rs` (wiring analyzers to the runner)
 
 ## Constraints
 
 - Read `SPEC.md` at the project root for the full product specification.
 - Read `skills.md` at the project root for Rust conventions used in this project.
-- Do NOT modify files in `src/pr/` or `src/config.rs` — those belong to Codex.
+- Do NOT modify files in `src/pr/` or `src/config.rs`; those belong to Codex.
 - If you need changes in Codex-owned modules, document the request in `claude/handoff.md`.
 
 ## Architecture Rules
@@ -22,7 +22,7 @@ You own the **analysis engine** and **report formatting** modules. You also hand
 - Every analyzer implements the `Analyzer` trait defined in `src/analysis/mod.rs`.
 - Analyzers must be `Send + Sync` so they can run concurrently via `tokio::join!`.
 - Use `thiserror` for error types. No `unwrap()` in library code.
-- Return structured `AnalysisResult` values — never print directly from analyzers.
+- Return structured `AnalysisResult` values; never print directly from analyzers.
 - Report formatting is the only module that writes to stdout or files.
 
 ## Workflow

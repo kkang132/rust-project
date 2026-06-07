@@ -2,7 +2,7 @@
 
 This file records key design decisions made during the development of `pr-analyzer`. Each entry captures the reasoning behind a choice so that future developers (or future us) can understand not just *what* the code does, but *why* it's shaped this way.
 
-Entries are numbered and appended chronologically. We don't delete or rewrite old entries — if a decision is reversed, we add a new entry referencing the old one.
+Entries are numbered and appended chronologically. We don't delete or rewrite old entries; if a decision is reversed, we add a new entry referencing the old one.
 
 ---
 
@@ -37,7 +37,7 @@ Entries are numbered and appended chronologically. We don't delete or rewrite ol
 **Rationale:** The trait-based approach gives us:
 - Independent unit testing per analyzer with fixture diffs
 - Concurrent execution without shared mutable state (each analyzer is `Send + Sync`)
-- Easy extensibility — new analyzers just implement the trait
+- Easy extensibility: new analyzers just implement the trait
 
 **Alternatives considered:**
 - *Single monolithic analyze function:* Simpler initially but harder to test, extend, and parallelize.
@@ -69,7 +69,7 @@ Entries are numbered and appended chronologically. We don't delete or rewrite ol
 
 **Context:** The tool needs a GitHub token and may need configurable thresholds (e.g., security patterns, complexity limits). We needed to decide how configuration works.
 
-**Decision:** Configuration loads from an optional `.pr-analyzer.toml` file in the current directory, with `GITHUB_TOKEN` falling back to an environment variable. The tool works with zero configuration — all analysis thresholds have hardcoded defaults.
+**Decision:** Configuration loads from an optional `.pr-analyzer.toml` file in the current directory, with `GITHUB_TOKEN` falling back to an environment variable. The tool works with zero configuration; all analysis thresholds have hardcoded defaults.
 
 **Rationale:** Zero-config startup means a developer can `cargo run -- <url>` immediately after setting `GITHUB_TOKEN`. The TOML file exists for teams that want to customize thresholds for their codebase.
 
@@ -89,7 +89,7 @@ Entries are numbered and appended chronologically. We don't delete or rewrite ol
 
 **Decision:** The overall risk is the maximum risk level across all analyzers. If any analyzer reports High, the overall is High.
 
-**Rationale:** Conservative by design — a PR with a critical security finding shouldn't get a "Medium" overall just because complexity and style are fine. The goal is to surface risk, not average it away.
+**Rationale:** Conservative by design. A PR with a critical security finding shouldn't get a "Medium" overall just because complexity and style are fine. The goal is to surface risk, not average it away.
 
 **Alternatives considered:**
 - *Weighted average:* More nuanced but harder to explain. A "Medium" overall when there's a High security finding would undermine trust.
@@ -127,7 +127,7 @@ Entries are numbered and appended chronologically. We don't delete or rewrite ol
 - Updated SPEC.md's "Core Trait" code block to show `-> Result<AnalysisResult, AnalysisError>`, matching the implementation and ADR-003.
 - Renamed `_colorize_risk` to `colorize_risk` in `src/report/mod.rs`.
 
-**Rationale:** The code was already correct — the spec document (SPEC.md) was stale. Fixing the spec prevents future agents from "correcting" the code back to the wrong signature. The naming fix removes a misleading Rust convention violation that could confuse both human readers and linters.
+**Rationale:** The code was already correct; the spec document (SPEC.md) was stale. Fixing the spec prevents future agents from "correcting" the code back to the wrong signature. The naming fix removes a misleading Rust convention violation that could confuse both human readers and linters.
 
 ---
 
@@ -136,7 +136,7 @@ Entries are numbered and appended chronologically. We don't delete or rewrite ol
 **Date:** 2026-02-17
 **Status:** Active
 
-**Context:** The project had zero observability — no logging, no span timing, no structured diagnostics. All output went through `println!()` to stdout. Debugging performance issues (especially GitHub API latency) or analyzer behavior required adding temporary print statements.
+**Context:** The project had zero observability: no logging, no span timing, no structured diagnostics. All output went through `println!()` to stdout. Debugging performance issues (especially GitHub API latency) or analyzer behavior required adding temporary print statements.
 
 **Decision:** Add `tracing` and `tracing-subscriber` (with `env-filter`) as dependencies. Instrument the pipeline with spans and events:
 - `main.rs`: Initialize subscriber writing to stderr, gated by `RUST_LOG` env var. Top-level span covers the full analysis.
@@ -148,7 +148,7 @@ Tracing output goes to stderr so it never contaminates the report on stdout.
 
 **Rationale:**
 - `tracing` is the Rust ecosystem standard for structured diagnostics, recommended over `log` for async code.
-- `env-filter` means zero overhead when `RUST_LOG` is unset — no impact on normal usage.
+- `env-filter` means zero overhead when `RUST_LOG` is unset, so no impact on normal usage.
 - Writing to stderr keeps the clean stdout report unaffected.
 - `#[instrument]` macros keep instrumentation minimal and co-located with the code.
 

@@ -1,4 +1,4 @@
-# Codex Agent Instructions — pr-analyzer
+# Codex Agent Instructions
 
 ## Evaluation Frame
 
@@ -10,15 +10,15 @@ You own the **PR data fetching**, **diff parsing**, **CLI setup**, and **configu
 
 ## Assigned Modules
 
-- `src/pr/` — `mod.rs`, `diff.rs`, `types.rs`
-- `src/config.rs` — Configuration loading from `.pr-analyzer.toml` and env vars
-- `src/main.rs` — CLI argument parsing with `clap` (shared with Claude for integration)
+- `src/pr/`: `mod.rs`, `diff.rs`, `types.rs`
+- `src/config.rs`: configuration loading from `.pr-analyzer.toml` and env vars
+- `src/main.rs`: CLI argument parsing with `clap` (shared with Claude for integration)
 
 ## Constraints
 
 - Read `SPEC.md` at the project root for the full product specification.
 - Read `skills.md` at the project root for Rust conventions used in this project.
-- Do NOT modify files in `src/analysis/` or `src/report/` — those belong to Claude.
+- Do NOT modify files in `src/analysis/` or `src/report/`; those belong to Claude.
 - If you need changes in Claude-owned modules, document the request in `codex/handoff.md`.
 
 ## Architecture Rules

@@ -1,4 +1,4 @@
-# Rust Conventions — pr-analyzer
+# Rust Conventions
 
 This file defines the shared coding conventions for all agents working on this project.
 
@@ -37,7 +37,7 @@ pub enum PrError {
 
 - Runtime: `tokio` with `#[tokio::main]` in `main.rs`.
 - Use `async_trait` crate for async trait methods.
-- Analyzers run concurrently via `tokio::join!` — they must be `Send + Sync`.
+- Analyzers run concurrently via `tokio::join!`, so they must be `Send + Sync`.
 
 ## Dependencies
 
@@ -58,7 +58,7 @@ Only use crates listed in `SPEC.md`. If you need a new dependency, document the 
 ## Formatting & Linting
 
 - Run `cargo fmt` before every commit.
-- Run `cargo clippy -- -D warnings` — all warnings are errors.
+- Run `cargo clippy -- -D warnings`; all warnings are errors.
 - No `#[allow(...)]` attributes without a comment explaining why.
 
 ## Testing

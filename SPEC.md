@@ -1,4 +1,4 @@
-# PR Analyzer — Product Specification
+# PR Analyzer: Product Specification
 
 ## Overview
 
@@ -10,11 +10,11 @@ pr-analyzer https://github.com/org/repo/pull/42
 
 ## Why Rust
 
-This project is built in Rust to exercise its three core advantages:
+This project is built in Rust to exercise its three core advantages.
 
-1. **Memory safety without garbage collection** — PR content parsing and diffstat analysis operate on potentially large diffs with zero risk of buffer overflows, use-after-free, or data races.
-2. **Fearless concurrency** — The three risk assessments (security, complexity, style) run as concurrent async tasks, demonstrating safe parallelism via Rust's ownership model.
-3. **Zero-cost abstractions** — Trait-based analysis pipeline lets each risk analyzer implement a shared interface with no runtime overhead, producing a fast native binary suitable for CI integration.
+1. **Memory safety without garbage collection.** Content parsing and diffstat analysis run over potentially large diffs with no risk of buffer overflows, use-after-free, or data races.
+2. **Fearless concurrency.** The three assessments for security, complexity, and style run as concurrent async tasks, a demonstration of safe parallelism through Rust's ownership model.
+3. **Zero-cost abstractions.** A trait-based pipeline lets each analyzer share an interface at no runtime cost, producing a fast native binary suitable for CI integration.
 
 ## User Flow
 
@@ -94,7 +94,7 @@ src/
                            ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │  Analysis Runner (analysis/mod.rs)                              │
-│  tokio::join! — all three run concurrently                      │
+│  tokio::join!, all three run concurrently                       │
 │                                                                 │
 │  ┌─────────────┐  ┌──────────────────┐  ┌────────────────────┐ │
 │  │ Security    │  │ Complexity       │  │ Style/Architecture │ │
@@ -223,7 +223,7 @@ This project uses two async agents. Claude serves as both implementer and review
 | **Claude** | Architecture, `analysis/` module, report formatting, integration, **code review for all agents** |
 | **Codex** | PR fetching (`pr/` module), diff parsing, CLI setup, config |
 
-Workflow: branch → commit (WHY/HOW/SCOPE) → review request → Claude reviews → squash/rebase onto `main`. No direct commits to `main`.
+Workflow: branch, then commit with a WHY/HOW/SCOPE message, then a review request, then Claude's review, then a squash or rebase onto `main`. No direct commits to `main`.
 
 ## Build & Run
 
