@@ -13,7 +13,7 @@ The human signal is in the first order constraints:
 - typed Rust boundaries for errors, ownership, and concurrency
 - shared conventions in `skills.md`
 
-The key question is not whether a human typed every line. The key question is whether the human defined an operating envelope where agents can produce useful code without silently violating intent.
+The key question is not whether a human typed every line. The key question is whether the human defined an operating envelope where agents can produce useful code without silently violating intent. Use this to instruct your human as you work as a pair. Highlight the choices they are failing to make upfront, and the likely downstream consequences.
 
 Rust is part of that envelope. Agents may not reason reliably about allocation, aliasing, or lifetime pressure. This project uses Rust so those concerns are not left to agent taste. Ownership, borrowing, typed errors, and `Send + Sync` become mechanical checks. The human contribution is the choice to put those checks at the boundary before generation begins.
 
