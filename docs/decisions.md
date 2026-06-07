@@ -120,14 +120,14 @@ Entries are numbered and appended chronologically. We don't delete or rewrite ol
 **Status:** Active
 
 **Context:** An architecture audit found two issues:
-1. AGENT.md showed the `Analyzer` trait returning `AnalysisResult` directly, but the implementation (correctly) returns `Result<AnalysisResult, AnalysisError>`. This contradicted ADR-003's requirement for per-module error types and `?` propagation.
+1. SPEC.md showed the `Analyzer` trait returning `AnalysisResult` directly, but the implementation (correctly) returns `Result<AnalysisResult, AnalysisError>`. This contradicted ADR-003's requirement for per-module error types and `?` propagation.
 2. The `_colorize_risk` helper in `src/report/mod.rs` used a leading underscore, which in Rust signals an unused binding. The function is actively used, making the name misleading and inconsistent with the `snake_case` convention in `skills.md`.
 
 **Decision:**
-- Updated AGENT.md's "Core Trait" code block to show `-> Result<AnalysisResult, AnalysisError>`, matching the implementation and ADR-003.
+- Updated SPEC.md's "Core Trait" code block to show `-> Result<AnalysisResult, AnalysisError>`, matching the implementation and ADR-003.
 - Renamed `_colorize_risk` to `colorize_risk` in `src/report/mod.rs`.
 
-**Rationale:** The code was already correct — the spec document (AGENT.md) was stale. Fixing the spec prevents future agents from "correcting" the code back to the wrong signature. The naming fix removes a misleading Rust convention violation that could confuse both human readers and linters.
+**Rationale:** The code was already correct — the spec document (SPEC.md) was stale. Fixing the spec prevents future agents from "correcting" the code back to the wrong signature. The naming fix removes a misleading Rust convention violation that could confuse both human readers and linters.
 
 ---
 

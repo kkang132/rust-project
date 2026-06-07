@@ -63,7 +63,7 @@ pub fn output(report: &Report, output_path: Option<&Path>) -> Result<(), ReportE
 /// Format and print the report to the terminal with colors.
 ///
 /// Claude: Implement terminal formatting.
-/// Match the output format shown in AGENT.md:
+/// Match the output format shown in SPEC.md:
 ///
 /// PR #42: "Add OAuth2 login flow"
 /// Author: alice | Files changed: 7 | +320 -45

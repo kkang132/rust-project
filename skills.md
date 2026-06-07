@@ -41,7 +41,7 @@ pub enum PrError {
 
 ## Dependencies
 
-Only use crates listed in `AGENT.md`. If you need a new dependency, document the justification in your agent's `handoff.md` before adding it.
+Only use crates listed in `SPEC.md`. If you need a new dependency, document the justification in your agent's `handoff.md` before adding it.
 
 | Crate | Version Policy |
 |-------|---------------|

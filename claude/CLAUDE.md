@@ -12,7 +12,7 @@ You own the **analysis engine** and **report formatting** modules. You also hand
 
 ## Constraints
 
-- Read `AGENT.md` at the project root for the full product specification.
+- Read `SPEC.md` at the project root for the full product specification.
 - Read `skills.md` at the project root for Rust conventions used in this project.
 - Do NOT modify files in `src/pr/` or `src/config.rs` — those belong to Codex.
 - If you need changes in Codex-owned modules, document the request in `claude/handoff.md`.
@@ -30,7 +30,7 @@ You own the **analysis engine** and **report formatting** modules. You also hand
 Follow the full workflow defined in the repo-root `AGENTS.md`. The short version:
 
 1. **Branch**: Create a branch from `main` using `claude/<type>/<name>` naming. Use a worktree if practical.
-2. **Implement**: Check `AGENT.md` for scope. Modify only your assigned modules.
+2. **Implement**: Check `SPEC.md` for scope. Modify only your assigned modules.
 3. **Test**: Write unit tests in `#[cfg(test)]` blocks. Run `cargo clippy -- -D warnings` and `cargo fmt`.
 4. **Commit**: Use the WHY/HOW/SCOPE commit message format from `AGENTS.md`.
 5. **Review request**: Produce a structured review request (Intent, Changes, Testing, Risks, Diff).

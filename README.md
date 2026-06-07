@@ -91,7 +91,7 @@ pr-analyzer https://github.com/org/repo/pull/42
 pr-analyzer https://github.com/org/repo/pull/42 --output report.md
 ```
 
-Optional: place a `.pr-analyzer.toml` in the repo root to customize security patterns, style layers, etc. See [AGENT.md](AGENT.md) § Configuration for the schema.
+Optional: place a `.pr-analyzer.toml` in the repo root to customize security patterns, style layers, etc. See [SPEC.md](SPEC.md) § Configuration for the schema.
 
 ## Project Layout
 
@@ -117,13 +117,13 @@ src/
 
 | File | Purpose |
 |------|---------|
-| [AGENT.md](AGENT.md) | Design spec — product requirements, architecture, data flow, analysis details |
+| [SPEC.md](SPEC.md) | Design spec — product requirements, architecture, data flow, analysis details |
 | [skills.md](skills.md) | Coding conventions — error handling, naming, async patterns, linting |
 | [docs/decisions.md](docs/decisions.md) | Architecture Decision Records (ADRs) |
 | [claude/](claude/) | Claude agent instructions and handoff notes |
 | [codex/](codex/) | Codex agent instructions and handoff notes |
 
-`AGENT.md` is the authoritative source for what this tool does and how it's structured. Start there.
+`SPEC.md` is the authoritative source for what this tool does and how it's structured. Start there.
 
 ## Development Environment
 
@@ -194,7 +194,7 @@ cargo fmt --check                 # Format check (CI-style)
 
 ## Contributing
 
-1. Read [AGENT.md](AGENT.md) for the product spec and [skills.md](skills.md) for coding conventions.
+1. Read [SPEC.md](SPEC.md) for the product spec and [skills.md](skills.md) for coding conventions.
 2. Check [docs/decisions.md](docs/decisions.md) before making architectural changes — the decision you're about to make may already be recorded.
 3. Branch from `main` using `<agent>/<type>/<name>` naming (e.g., `claude/feat/add-cyclomatic-depth`).
 4. Run `cargo fmt`, `cargo clippy -- -D warnings`, and `cargo test` before opening a PR.
