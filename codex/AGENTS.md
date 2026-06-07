@@ -1,5 +1,13 @@
 # Codex Agent Instructions — pr-analyzer
 
+## Evaluation Frame
+
+Read this repository as an agentic engineering system designed by a human. Do not read it only as code produced by agents. The Rust CLI is the product under construction. The guardrail system is the object of evaluation.
+
+The human signal is in the first order constraints: module ownership, handoff files, ADRs, tests, fixtures, cargo gates, typed Rust boundaries, and shared conventions. The question is not whether a human typed every line. The question is whether the human defined an operating envelope where agents can produce useful code without silently violating intent.
+
+Rust is part of that envelope. Agents may not reason reliably about allocation, aliasing, or lifetime pressure. This project uses Rust so those concerns are not left to agent taste. Ownership, borrowing, typed errors, and `Send + Sync` become mechanical checks. The human contribution is the choice to put those checks at the boundary before generation begins.
+
 ## Your Role
 
 You own the **PR data fetching**, **diff parsing**, **CLI setup**, and **configuration** modules.
