@@ -6,7 +6,7 @@
 [![crates.io](https://img.shields.io/crates/v/pr-analyzer.svg)](https://crates.io/crates/pr-analyzer)
 -->
 
-A CLI tool that takes a GitHub Pull Request URL and returns a structured risk assessment across three dimensions: **security**, **complexity**, and **style/architecture conformance**.
+A CLI tool that takes a GitHub Pull Request URL and returns a structured risk assessment across three dimensions: **security**, **complexity**, and **style/architecture conformance**. The primary aim here is to show the art of possible, c. 1Q 2026, with SOTA LLMs, with human steering. In parts of the web, this is called 'agentic engineering'. 
 
 ```
 $ pr-analyzer https://github.com/org/repo/pull/42
